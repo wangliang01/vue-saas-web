@@ -1,0 +1,113 @@
+$menuText:#AEB6BC;
+$menuActiveText:$--color-primary;
+$subMenuActiveText:#FFFFFF;
+
+// $menuBg:#202020;
+$menuBg:#202020;
+$menuHover:#363636;
+
+$subMenuBg:#202020;
+$subMenuHover:#363636;
+
+$backWhite:#ffffff;
+
+$sideBarWidth: 208px;
+
+
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+  backWhite: $backWhite;
+}
+
+.nav-menu-vertical{
+  // 有children
+  ::v-deep .el-submenu {
+    display: table;
+    width: 100%;
+    vertical-align: middle;
+    .el-submenu__title {
+      color: $menuText !important;
+    }
+    // 图标
+    .iconfont {
+      margin-right: 12px;
+      width: 16px;
+      height: 16px;
+    }
+    &.is-active {
+      .el-submenu__title {
+        color: $subMenuActiveText !important;
+        & > i {
+          color: $subMenuActiveText !important;
+        }
+      }
+      .iconfont {
+        color: $subMenuActiveText !important;
+      }
+    }
+
+   
+  }
+
+  // 没有children
+  ::v-deep .el-menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    // 图标
+    .iconfont {
+      margin-right: 12px;
+      width: 16px;
+      height: 16px;
+    }
+    & > span {
+      position: relative ;
+      color: $menuText;
+    }
+
+    &.is-active {
+      position: relative;
+      background-color: $subMenuHover !important;
+      &:after {
+        position: absolute;
+        right: 0;
+        width: 3px;
+        height: 100%;
+        background-color: $menuActiveText !important;
+        content: '';
+      }
+    }
+
+    &.is-active > .iconfont {
+      color: $menuActiveText;
+    }
+
+    &.is-active > span {
+      color: $menuActiveText;
+    }
+  }
+
+  // children中的子元素
+  ::v-deep .menu-item__children{
+     .el-menu-item {
+      & > .dot{
+        display: inline-block;
+        width: 2px;
+        height: 2px;
+        margin-right: 18px;
+        background-color: $menuText;
+      }
+    }
+  }
+}
+
+
+
+

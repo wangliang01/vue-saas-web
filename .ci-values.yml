@@ -1,0 +1,75 @@
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+
+secretName: "newhopescm-ingress-secret"
+
+configs:
+  enabled: true
+  # config inject type: env, file
+  type: file
+  path: /etc/nginx/conf.d # config mount path when type is file
+  data:
+    default.conf: |
+      server {
+        listen 80;
+        server_name localhost;
+
+        root   /opt/dist;
+        index  index.html index.htm;
+        
+        #charset koi8-r;
+    
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   /opt/dist;
+            index  index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        #不缓存html
+        location ~ .*\.(?:htm|html)$ {
+            add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
+            root   /opt/dist;
+            index  index.html index.htm;
+        }
+
+        # location ~ .*(js|css|png|gif|jpg|mp3|ogg)$ {
+        #     root   /opt/dist;
+        # }	
+
+        location /pron/file/upload {
+            rewrite  ^.+pron/?(.*)$ /$1 break;
+            proxy_pass http://yyx-file.yyx-file:8080;
+            client_max_body_size  500m;
+        }
+
+        location /pron {
+            rewrite  ^.+pron/?(.*)$ /$1 break;
+            proxy_pass  http://yyx-gateway.yyx-gateway:8080;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+            proxy_set_header Upgrade-Insecure-Requests 1;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            add_header Access-Control-Allow-Origin '*';
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+            add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,tenantId';
+
+            if ($request_method = 'OPTIONS') {
+                return 204;
+            }
+        }
+      }

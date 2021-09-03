@@ -1,0 +1,11 @@
+include:
+  - project: 'devops/gitlabci-scaffold-pub'
+    file: '/node/common.yml'
+
+variables:
+  DEPLOY_IMAGE: $_REGISTRY/devops/yyx-k8s-manage:latest
+  COMPILE_COMMAND: 'npm run build:dev'
+  QA_COMPILE_COMMAND: 'npm run build:test'
+  PROD_COMPILE_COMMAND: 'npm run build'
+  UI_ARTIFACT: dist.tar # 构建工件的目录，项目根目录的相对路径
+  DEV_URL_SUFFIX: dev.newhopescm.com
