@@ -6,4 +6,4 @@
 export const CLIENT_ID = 'supplier-chain'
 
 // 项目名称
-export const PROJECT_NAME = '供应链管理后台'
+export const PROJECT_NAME = 'vue-sass-web'

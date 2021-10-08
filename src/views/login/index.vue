@@ -4,7 +4,7 @@
       <div class="login-content">
         <div class="login-form">
           <div class="wrapper">
-            <h1 class="title">供应链管理后台</h1>
+            <h1 class="title">vue-saas-web</h1>
             <div class="tabs">
               <div class="tabs-item" :class="{active: actionTab==='password'}" @click="toggleTab('password')">账户密码登录</div>
               <!-- <div class="tabs-item" :class="{active: actionTab==='phone'}" @click="toggleTab('phone')">手机号登录</div> -->
