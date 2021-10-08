@@ -13,7 +13,7 @@ import 'yyx-component/lib/yui.css'
 import './styles/base.scss'
 import './styles/element-theme.scss'
 import './styles/element.scss'
-import '@/assets/fonts/iconfont.css'
+import '@/assets/fonts/iconfont.scss'
 
 // 打印项目版本号 在测试，生产环境上查看...
 import packageJson from '../package.json'
