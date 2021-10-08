@@ -1,5 +1,5 @@
 {
-  "name": "vue-base-web",
+  "name": "yyx-group-meal-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -32,7 +32,7 @@
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
-    "yyx-component": "^1.10.20"
+    "yyx-component": "^1.13.23"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

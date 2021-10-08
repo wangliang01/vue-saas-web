@@ -5,7 +5,7 @@ import { PROJECT_NAME } from '@/config/setting'
  * @description 设置网页标题
  */
 function setTitle(route) {
-  const title = route?.meta?.title || PROJECT_NAME
+  const title = route?.meta?.title ? `${PROJECT_NAME} | ${route?.meta?.title}` : PROJECT_NAME
   document.title = title
 }
 

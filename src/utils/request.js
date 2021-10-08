@@ -9,6 +9,7 @@ import { get as _get, toNumber } from 'lodash'
 import NProgress from 'nprogress'
 import storage from '@/utils/storage'
 import { CLIENT_ID } from '@/config/setting'
+// import store from '@/store'
 const instance = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '/api' : '/pron',
   timeout: 20000 // 请求超时时间
@@ -59,7 +60,7 @@ const errorHandler = (error) => {
       default:
         break
     }
-    Message.error(error.message)
+    Message.error({ message: error.message, offset: 50 })
   }
   return Promise.reject(error)
 }
@@ -70,11 +71,21 @@ instance.interceptors.request.use(
     NProgress.start()
     // 取出本地token
     const token = storage.get('token')
+    const customerInfo = storage.get('customerInfo')
     // 在请求头中加上Authorization字段
+    // config.headers.Authorization = 'Basic ' + window.btoa('system-service' + ':' + 'system-service')
     config.headers.Authorization = 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_ID)
     if (token) {
       config.headers.Authorization = 'bearer ' + token
     }
+    // config.headers.clientid = CLIENT_ID
+    if (customerInfo?.tenantId) {
+      config.headers.tenantId = encodeURIComponent(customerInfo.tenantId)
+    }
+    if (customerInfo?.orgId) {
+      config.headers.orgId = customerInfo.orgId
+    }
+    // config.headers.orgId = process.env.NODE_ENV === 'development' ? 1 : 0
     return config
   },
   err => {
@@ -89,7 +100,7 @@ instance.interceptors.response.use(response => {
   const { data: { code, msg, success }} = response
   // 响应数据先拦截住  对成功和失败的状态码统一处理
   if (success === false) {
-    Message.error(msg)
+    Message.error({ message: msg, offset: 50 })
     if (router.currentRoute.path === '/login') {
       storage.removeAll()
     } else {
@@ -98,6 +109,7 @@ instance.interceptors.response.use(response => {
         router.push('/login')
       }
     }
+    return Promise.reject(response)
   } else {
     return response.data
   }

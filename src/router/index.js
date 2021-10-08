@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import setTitle from '@/utils/setTitle'
 import Layout from '@/layout'
+import storage from '@/utils/storage'
 
 Vue.use(VueRouter)
 
@@ -9,11 +10,13 @@ Vue.use(VueRouter)
 export const asyncRoutes = [
   {
     path: '/',
-    name: 'Home',
+    redirect: '/home',
+    name: 'Layout',
     component: Layout,
     children: [
       {
-        path: '',
+        path: '/home',
+        name: 'Home',
         component: () => import('@/views/home')
       }
     ]
@@ -30,15 +33,32 @@ export const routes = [
   ...asyncRoutes
 ]
 
+// 自动引入 路由文件
+const files = require.context('../router', true, /\.js$/)
+files.keys().forEach(key => {
+  if (key === './index.js') return
+  const children = routes.find(im => im.name === 'Layout')?.children
+  if (Array.isArray(children)) children.push.apply(children, files(key).default)
+})
+
 const router = new VueRouter({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
 
-router.beforeEach((from, to, next) => {
+router.beforeEach((to, form, next) => {
   setTitle(to)
-  next()
+  if (to.path === '/login') {
+    next() // 放行
+  } else {
+    const token = storage.get('token')
+    if (token) {
+      next()
+      return
+    }
+    next('/login')
+  }
 })
 
 export default router

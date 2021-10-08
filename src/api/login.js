@@ -17,8 +17,18 @@ export function forget(data) {
 }
 
 /* 获取用户基本信息 */
+// export function getStaffInfo(data) {
+//   return request.get('/system/staff/loginStaffInfo', data)
+// }
+
+/* 获取用户基本信息 */
 export function getStaffInfo(data) {
-  return request.get('/bff/permission/staff/loginStaffInfo', data)
+  return request.get('/scm/customer/getCustomerInfoByToken', data)
+}
+
+/* 获取租户id和组织id */
+export function getUserStructure(data) {
+  return request.get('/scm/customer/getUserStructure', data)
 }
 
 /* 获取验证码 */

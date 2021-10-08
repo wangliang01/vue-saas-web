@@ -36,10 +36,21 @@ $sideBarWidth: 208px;
       color: $menuText !important;
     }
     // 图标
+    .menu-item {
+      .iconfont {
+        font-size: 16px;
+      }
+    }
+
+    .menu-item__children {
+      .iconfont {
+        font-size: 14px;
+      }
+    }
     .iconfont {
-      margin-right: 12px;
-      width: 16px;
-      height: 16px;
+      margin-right: 20px;
+      //width: 16px;
+      //height: 16px;
     }
     &.is-active {
       .el-submenu__title {
@@ -48,12 +59,12 @@ $sideBarWidth: 208px;
           color: $subMenuActiveText !important;
         }
       }
-      .iconfont {
+      /* .iconfont {
         color: $subMenuActiveText !important;
-      }
+      } */
     }
 
-   
+
   }
 
   // 没有children
@@ -63,9 +74,9 @@ $sideBarWidth: 208px;
     align-items: center;
     // 图标
     .iconfont {
-      margin-right: 12px;
-      width: 16px;
-      height: 16px;
+      margin-right: 20px;
+      //width: 16px;
+      //height: 16px;
     }
     & > span {
       position: relative ;
@@ -107,7 +118,12 @@ $sideBarWidth: 208px;
     }
   }
 }
-
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover, .el-menu--horizontal .el-menu-item:not(.is-disabled):focus {
+  color: $menuActiveText !important;
+  .iconfont {
+    color: $menuActiveText;
+  }
+}
 
 
 

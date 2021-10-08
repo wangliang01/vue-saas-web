@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     const loginStaffInfo = storage.get('userInfo')
-    this.staffName = loginStaffInfo.staffName
+    this.staffName = loginStaffInfo?.customerName
   },
   methods: {
     async handleLogout() {

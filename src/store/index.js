@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import storage from '@/utils/storage'
-import { findIndex } from 'lodash'
+// import { findIndex } from 'lodash'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    tags: storage.get('tags') || []
+    tags: storage.get('tags') || [],
+    tenantId: '4'
   },
   mutations: {
     /**
@@ -15,11 +16,13 @@ export default new Vuex.Store({
      * @param {Object} state Vuex中的state
      * @param {Object} tag Vue-Router中的route对象
      */
-    ADD_TAG(state, tag) {
+    ADD_TAG(state, { tag, old }) {
+      const tags = state.tags
       if (tag) {
-        const index = findIndex(state.tags, tag)
+        const index = tags.findIndex(im => im.path === tag.path)
         if (index === -1) {
-          state.tags.push(tag)
+          const cIndex = tags.findIndex(im => im.path === old?.path)
+          cIndex > -1 ? tags.splice(cIndex + 1, 0, tag) : tags.push(tag)
         }
         // 同时存放在localStorage中
         storage.set('tags', state.tags)
@@ -31,13 +34,14 @@ export default new Vuex.Store({
      * @param {Object} tag Vue-Router中的route对象
      */
     REMOVE_TAG(state, tag) {
+      const tags = state.tags
       if (tag) {
-        const index = findIndex(state.tags, tag)
-        if (index > -1) {
-          // 删除该tag
-          state.tags.splice(index, 1)
+        let index = tags.findIndex(im => im.name === tag.name)
+        if (index === -1) index = tags.findIndex(im => im.name === tag.name)
+        if (index !== -1) {
+          tags.splice(index, 1)
           // 同时存放在localStorage中
-          storage.set('tags', state.tags)
+          storage.set('tags', tags)
         }
       }
     },
@@ -49,6 +53,8 @@ export default new Vuex.Store({
     SET_TAG(state, tags) {
       if (tags && tags.length) {
         state.tags = tags
+        // 同时存放在localStorage中
+        storage.set('tags', state.tags)
       }
     }
   },
