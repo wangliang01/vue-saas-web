@@ -29,6 +29,9 @@
 .el-form-item__label,.el-form-item__content,.el-cascader,.el-input__icon{
   line-height: 32px;
 }
+.el-range__close-icon {
+  line-height: 26px !important;
+}
 .el-form-item__error{
   padding-top: 1px;
 }

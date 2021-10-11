@@ -4,7 +4,7 @@ import { Loading } from 'element-ui'
 let loading = null
 
 // 显示全局遮罩
-export const openFullScreen = (text = '加载中') => {
+export const openFullScreen = (text = '处理中...') => {
   loading = Loading.service({
     lock: true,
     text,

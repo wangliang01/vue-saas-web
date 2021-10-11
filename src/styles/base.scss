@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -19,7 +19,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -252,3 +252,25 @@ body,html{
 ::-webkit-scrollbar-thumb { height: 50px; background: #bec7d5; border-radius: 6px; }
 
 ::-webkit-scrollbar-thumb:hover { background: #91a0b5; }
+
+// 路由页面容器 class
+.content-container{
+  height: 100%;
+  padding: 0px 16px 16px 16px;
+  box-sizing: border-box;
+  background-color: $--background-color-grey;
+  position: relative;
+}
+
+.footer-button {
+  position: fixed;
+  bottom: 0px;
+  left: 208px;
+  height: 64px;
+  width: calc(100% - 208px);
+  background: $--color-white;
+  box-shadow: $--box-shadow-light;
+  line-height: 64px;
+  padding-left: 40px;
+  box-sizing: border-box;
+}

@@ -6,15 +6,14 @@
         <!-- 顶部一级菜单 -->
         <div class="layout-top">
           <div class="nav-menu-title">
-            <h1>集鲜运营平台</h1>
+            <h1>鲜生活供应链系统</h1>
           </div>
           <div v-if="isHorizontal" class="menu">
             <el-row>
               <el-menu
-                :default-active="activeMainMenu"
+                :default-active="computedActiveMainMenu"
                 class="nav-menu-horizontal flex"
                 mode="horizontal"
-                :background-color="menuStyle.backWhite"
                 text-color="#000000"
                 :active-text-color="menuStyle.menuActiveText"
                 :router="true"
@@ -37,10 +36,14 @@
         </div>
         <!-- 左侧二级菜单 -->
         <div class="layout-bottom">
-          <Menu :menu="menu" :active-main-menu="activeMainMenu" :is-horizontal="isHorizontal"></Menu>
+          <Menu :menu="menu" :active-main-menu="computedActiveMainMenu" :is-horizontal="isHorizontal"></Menu>
           <div class="main">
-            <Tags></Tags>
-            <router-view class="router-view"></router-view>
+            <Tags @refresh="hanldeRefresh"></Tags>
+            <transition name="fade-transverse" mode="out-in">
+              <keep-alive v-if="refresh" :include="keepAliveInclude">
+                <router-view :key="key" class="router-view"></router-view>
+              </keep-alive>
+            </transition>
           </div>
         </div>
       </el-col>
@@ -52,7 +55,7 @@
 /* eslint-disable */
 import Menu from './Menu'
 import Tags from './Tags.vue'
-import menuConfig from '@/config/menu'
+import menuConfig from '@/config'
 import menuStyle from '../styles/menu.scss'
 import User from './User.vue'
 export default {
@@ -65,17 +68,36 @@ export default {
   data() {
     const { menu } = menuConfig
     return {
+      refresh:true,
       menu: menu,
       menuStyle,
-      activeMainMenu: '/operation',
-      isHorizontal: menuConfig.menuMode === 'horizontal'
+      activeMainMenu: '/supplier',
+      isHorizontal: false
+    }
+  },
+  computed:{
+    computedActiveMainMenu() {
+      const active = this.$route.fullPath.split('/')[1] || this.activeMainMenu
+      return active.includes('/') ? active : `/${active}`
+    },
+    keepAliveInclude() { // 只有tag存在的 才会缓存路由 如果配置了 isKeepAlive : false 不缓存
+      const includes = this.$store.state.tags?.filter(im => im?.meta?.isKeepAlive === undefined || im?.meta?.isKeepAlive).map(route => route.name ) || []
+      // console.log(includes, '00000')
+      return includes
+    },
+    key() {
+      return this.$route.fullPath
     }
   },
   created() {
     this.setDefaultActiveMenu()
-    this.responsiveLayout()
+    // this.responsiveLayout()
   },
   methods: {
+    hanldeRefresh() {
+      this.refresh = false
+      this.$nextTick(() => (this.refresh = true))
+    },
     responsiveLayout() {
       window.addEventListener('resize', (e) => {
         const screenWidth = window.innerWidth
@@ -180,5 +202,19 @@ $--background-color-grey: #EFF3F6;
 
 .iconfont{
   margin-right: 6px;
+}
+
+.fade-transverse-enter {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+.fade-transverse-leave-to {
+  opacity: 0;
+  transform: translateX(200px);
+}
+.fade-transverse-leave-active,
+.fade-transverse-enter-active {
+  transition: all .3s;
 }
 </style>

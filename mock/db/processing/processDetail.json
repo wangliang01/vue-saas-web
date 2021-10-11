@@ -1,0 +1,21 @@
+{
+  "saleProcessingOrderDetailVO": [
+    {
+      "goodsType": 1,
+      "processingNum": 20,
+      "processingUnitId": 1,
+      "processingUnitName": "份",
+      "semifinishedId": 0,
+      "semifinishedName": "土豆丝",
+      "semifinishedSpec": "",
+      "skuId": "SKU1000001",
+      "skuName": "土豆",
+      "spec": "带皮土豆",
+      "storageNum": 100,
+      "storageUnitId": 0,
+      "storageUnitName": "斤"
+    }
+  ],
+  "warehouseId": 100021010,
+  "warehouseName": "A仓"
+}

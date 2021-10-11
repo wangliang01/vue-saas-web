@@ -10,14 +10,14 @@
     @open="handleOpen"
     @close="handleClose"
   >
-    <template v-for="(menuItem, index) in leftMenu">
-      <MenuItem v-if="show" :key="index" :menu-item="menuItem"></MenuItem>
+    <template v-for="(menuItem) in leftMenu">
+      <MenuItem v-if="!menuItem.hidden" :key="menuItem.path" :menu-item="menuItem"></MenuItem>
     </template>
   </el-menu>
 </template>
 
 <script>
-import menuConfig from '@/config/menu'
+import menuConfig from '@/config'
 import menuStyle from '../styles/menu.scss'
 import MenuItem from './MenuItem.vue'
 export default {
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       menuStyle,
-      defaultActive: '',
       show: true
     }
   },
@@ -50,12 +49,15 @@ export default {
     leftMenu() {
       if (this.isHorizontal) {
         const menu = this.menu.filter(item => item.path === this.activeMainMenu)
-        return menu[0].children ? menu[0].children : menu
+        return menu[0] && menu[0].children ? menu[0].children : menu
       }
       return this.menu
+    },
+    defaultActive() {
+      return this.$route.fullPath
     }
   },
-  watch: {
+  /* watch: {
     leftMenu() {
       this.defaultActive = this.$route.fullPath
       this.$forceUpdate()
@@ -68,7 +70,7 @@ export default {
         this.show = true
       })
     }
-  },
+  }, */
   mounted() {
     console.log('menu mounted', this.leftMenu)
   },
@@ -83,5 +85,5 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '../styles/menu.scss'
+  @import '../styles/menu.scss';
 </style>

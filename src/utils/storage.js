@@ -1,6 +1,6 @@
 import Storages from 'js-storage'
 
-const ns = Storages.initNamespaceStorage('vue-saas-web')
+const ns = Storages.initNamespaceStorage('yyx-group-meal-web')
 
 const storage = ns.localStorage
 

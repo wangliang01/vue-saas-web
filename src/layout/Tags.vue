@@ -5,7 +5,10 @@
       <y-tag v-if="!isHide" class="y-m-r-8 tag-cur-point tag-next" @click="onRight"><i class="el-icon-arrow-right"></i></y-tag>
       <div ref="tags" class="tags">
         <div ref="tags-nav" class="tags-nav" :style="setTranslateX">
-          <y-tag v-for="tag in tags" :key="tag.path" closable class="y-m-r-8 tag" :type="getType(tag)" @close="handleClose(tag)" @click="handleClick(tag)">{{ tag.meta && tag.meta.title }}</y-tag>
+          <y-tag v-for="(tag, index) in tags" :key="tag.path" closable class="y-m-r-8 tag" :type="getType(tag)" @close="handleClose(tag, index)" @click="handleClick(tag)">
+            {{ tag.meta && tag.meta.title }}
+            <i v-if="getType(tag) === 'primary'" class="el-icon-refresh" style="marginLeft:5px" @click="$emit('refresh')"></i>
+          </y-tag>
         </div>
       </div>
     </div>
@@ -25,7 +28,7 @@
 
 <script>
 import getTag from '@/utils/getTag'
-import config from '@/config/menu'
+import config from '@/config'
 import { mapState } from 'vuex'
 import _ from 'lodash'
 
@@ -44,12 +47,16 @@ export default {
   },
   watch: {
     '$route': {
-      handler(val) {
+      handler(val, old) {
         const routes = config.menu
         const curTag = getTag(routes, val)
+        if (!curTag) return
+        const curRoute = this.$route
+        curTag.name = curRoute.name
+        curTag.query = curRoute.query
         if (curTag?.children && curTag.children.length) return
         // 添加到store中
-        this.$store.commit('ADD_TAG', curTag)
+        this.$store.commit('ADD_TAG', { tag: curTag, old })
         this.$nextTick(() => {
           this._init()
         })
@@ -77,15 +84,29 @@ export default {
       }
       return 'info'
     },
-    handleClose(tag) {
+    handleClose(tag, tagIndex) {
+      if (tagIndex === 0 && this.tags.length === 1) {
+        this.$message.warning('此标签不可移除了...')
+        return
+      }
       // 移除选中的tag
       this.$store.commit('REMOVE_TAG', tag)
-      this.$nextTick(() => {
-        this._init()
-      })
+      if (this.getType(tag) === 'primary') {
+        const nextTag = this.tags.slice(tagIndex)[0]
+        const prevTag = this.tags.slice(tagIndex - 1)[0]
+        if (prevTag) {
+          this.$router.push({ path: prevTag.path, query: prevTag.query })
+        } else if (nextTag) {
+          this.$router.push({ path: nextTag.path, query: nextTag.query })
+        } else {
+          this.$router.push('/')
+        }
+      }
+      this.$nextTick(() => this._init())
     },
     handleClick(tag) {
-      this.$router.push(tag.path)
+      if (tag.path === this.$route.path) return
+      this.$router.push({ path: tag.path, query: tag.query })
     },
     init() {
       const tags = this.$refs['tags-container']
