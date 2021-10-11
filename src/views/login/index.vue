@@ -494,8 +494,7 @@ export default {
 }
 .login-bg{
   flex: 1;
-  //background-image: url('../../assets/bg.png');
-  background:url('../../assets/bg2.png') no-repeat 12% center/auto 70%, url('../../assets/bg1.png') center top/100% 100% no-repeat, url('../../assets/bg.png') center top/100% 100% no-repeat;
+  background:url('../../assets/images/bg2.png') no-repeat 12% center/auto 70%, url('../../assets/images/bg1.png') center top/100% 100% no-repeat, url('../../assets/images/bg.png') center top/100% 100% no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -513,7 +512,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-image: url('../../assets/white.png');
+  background-image: url('../../assets/images/white.png');
   background-size: 42% 100%;
   background-repeat: no-repeat;
   background-position: 100% 0;
