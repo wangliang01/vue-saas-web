@@ -1,4 +1,4 @@
-const files = require.context('../components', true, /\.js$/)
+const files = require.context('@/components', true, /\.js$/)
 const components = {}
 
 files.keys().forEach(key => {

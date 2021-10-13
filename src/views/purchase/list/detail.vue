@@ -1,36 +1,24 @@
 <template>
-  <div class="goods-list">
+  <div class="purchase-list-detail">
     <y-table-pro :load-data-api="pageList" :columns="columns" ui-style="antd" :pagination="{'page-size': 20}"></y-table-pro>
   </div>
 </template>
 
 <script>
-import api from '@/api'
 export default {
-  name: 'GoodsList',
-  components: {
-  },
-  props: {
-
-  },
+  name: 'PurchaseDetail',
   data() {
     return {
-      pageList: api.goodsApi.getGoodsList,
+      pageList: null,
       columns: [
         {
-          label: '商品编号',
-          prop: 'skuId',
-          filter: true,
-          fieldType: 'Input'
+          label: '采购日期'
         },
         {
-          label: '商品名称',
-          prop: 'skuName',
-          filter: true,
-          fieldType: 'Input'
+          label: '商品编号'
         },
         {
-          label: '商品分类'
+          label: '商品名称'
         },
         {
           label: '规格'
@@ -39,13 +27,13 @@ export default {
           label: '单位'
         },
         {
-          label: '是否标品'
+          label: '采购数量'
         },
         {
           label: '约定单价'
         },
         {
-          label: '操作'
+          label: '采购总额'
         }
       ]
     }
@@ -60,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.goods-list{
+.purchase-list-detail{
   margin: 0 16px;
 }
 </style>

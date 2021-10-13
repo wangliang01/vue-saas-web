@@ -2,7 +2,18 @@ const path = require('path')
 const webpack = require('webpack')
 const buildDate = JSON.stringify(new Date().toLocaleDateString())
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const devServer = require('./devServer')
+const chalk = require('chalk')
+
+const isMock = process.env.VUE_APP_ENV === 'mock'
+console.log(`${chalk.green('当前运行环境:')} ${chalk.red(process.env.VUE_APP_ENV)}`)
+let devServer = {}
+if (isMock) {
+  // mock环境
+  devServer = require('./mock/server')
+} else {
+  // 其他
+  devServer = require('./devServer')
+}
 
 function resolve(dir) {
   return path.join(__dirname, '.', dir)
@@ -19,18 +30,7 @@ module.exports = {
     }
   },
   // 如要与后端联调，请前往devServer/index.js 中进行修改proxy配置
-  devServer: devServer || {
-    proxy: {
-      '/api': {
-        // target: 'https://test-k8s.newhopescm.com/pron', // 目标地址
-        target: 'https://www.fastmock.site/mock/25bd6482fe8a49135a76446a526af07b/group', // mock地址
-        logLevel: 'debug',
-        ws: false, // 是否启用websockets
-        changeOrigin: true, // 开启代理：在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求的数据，这样服务端和服务端进行数据的交互就不会有跨域问题
-        pathRewrite: { '^/api': '' } // 这里重写路径
-      }
-    }
-  },
+  devServer,
   configureWebpack: {
     module: {
       rules: [

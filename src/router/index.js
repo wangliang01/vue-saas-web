@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 export const asyncRoutes = [
   {
     path: '/',
-    redirect: '/goods/list',
     name: 'Layout',
     component: Layout,
     children: [
       {
         path: '',
+        redirect: '/purchase/list',
         name: 'Home',
         component: () => import('@/views/home')
       }
@@ -34,12 +34,16 @@ export const routes = [
 ]
 
 // 自动引入 路由文件
-const files = require.context('../router', true, /\.js$/)
+const files = require.context('@/router', true, /\.js$/)
 files.keys().forEach(key => {
+  console.log(key)
   if (key === './index.js') return
-  const children = routes.find(im => im.name === 'Layout')?.children
+  const children = routes.find(route => route.name === 'Layout')?.children
+  console.log(children)
   if (Array.isArray(children)) children.push.apply(children, files(key).default)
 })
+
+console.log('路由信息', routes)
 
 const router = new VueRouter({
   mode: 'hash',
@@ -47,7 +51,7 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, form, next) => {
+router.beforeEach((to, from, next) => {
   setTitle(to)
   if (to.path === '/login') {
     next() // 放行

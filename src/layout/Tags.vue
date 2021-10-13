@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <el-dropdown trigger="click" @command="handleCommand">
+    <el-dropdown v-if="!isHide" trigger="click" @command="handleCommand">
       <span class="el-dropdown-link">
         <y-tag class="tag-cur-point tag-down"><i class="el-icon-arrow-down"></i></y-tag>
       </span>

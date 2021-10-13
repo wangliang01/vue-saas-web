@@ -71,7 +71,7 @@ export default {
       refresh:true,
       menu: menu,
       menuStyle,
-      activeMainMenu: '/supplier',
+      activeMainMenu: '/purchase',
       isHorizontal: false
     }
   },
@@ -80,8 +80,8 @@ export default {
       const active = this.$route.fullPath.split('/')[1] || this.activeMainMenu
       return active.includes('/') ? active : `/${active}`
     },
-    keepAliveInclude() { // 只有tag存在的 才会缓存路由 如果配置了 isKeepAlive : false 不缓存
-      const includes = this.$store.state.tags?.filter(im => im?.meta?.isKeepAlive === undefined || im?.meta?.isKeepAlive).map(route => route.name ) || []
+    keepAliveInclude() { // 只有tag存在的 才会缓存路由 如果配置了 keepAlive : false 不缓存
+      const includes = this.$store.state.tags?.filter(tag => tag?.meta?.keepAlive === undefined || tag?.meta?.keepAlive).map(route => route.name ) || []
       // console.log(includes, '00000')
       return includes
     },
