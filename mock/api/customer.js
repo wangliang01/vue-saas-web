@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-router.prefix = '/scm'
+router.prefix = '/sbm'
 
 router.use(function(req, res, next) {
   console.log('请求开始: ', req.url)

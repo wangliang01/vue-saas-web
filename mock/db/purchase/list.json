@@ -1,0 +1,26 @@
+[
+  {
+    "createTime": "2021-10-15T14:09:35",
+    "distributionDate": "2021-11-15",
+    "goodsSum": 10,
+    "purchaseOrderId": 0,
+    "purchaseAmountSum": 9000,
+    "purchaseOrderNo": "1",
+    "purchaseOrderOrigin": "18566725203/王亮",
+    "purchaseOrderType": "NON_URGENT",
+    "status": 20,
+    "updateTime": "2021-10-15T14:09:35"
+  },
+  {
+    "createTime": "2021-10-15T14:09:35",
+    "distributionDate": "2021-11-15",
+    "goodsSum": 20,
+    "purchaseOrderId": 1,
+    "purchaseAmountSum": 80000,
+    "purchaseOrderNo": "2",
+    "purchaseOrderOrigin": "18566725203/王亮",
+    "purchaseOrderType": "URGENT",
+    "status": 30,
+    "updateTime": "2021-10-15T14:09:35"
+  }
+]

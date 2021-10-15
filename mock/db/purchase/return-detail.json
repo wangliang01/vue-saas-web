@@ -1,0 +1,14 @@
+[
+  {
+    "goodsCode": "1",
+    "goodsId": 1,
+    "goodsName": "新希望纯牛奶",
+    "goodsUnit": "袋",
+    "purchaseDate": "2021-10-15T15:09:36",
+    "purchaseNumber": 10000,
+    "purchasePrice": 3.5,
+    "refundDate": "2021-10-15T15:09:36",
+    "spec": "250ml",
+    "totalAmount": 35000
+  }
+]

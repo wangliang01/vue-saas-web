@@ -1,0 +1,13 @@
+[
+  {
+    "createTime": "2021-10-15T16:50:21",
+    "goodsSum": 20,
+    "refundAmountSum": 1000,
+    "refundDate": "2021-10-15T16:52:23",
+    "refundNo": "1",
+    "refundOrderId": 0,
+    "refundOrigin": "18566725203/王亮",
+    "remark": "这是一条备注",
+    "warehouseName": "成都仓库"
+  }
+]

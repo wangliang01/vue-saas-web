@@ -1,6 +1,41 @@
 [
   {
-    "skuId": "123",
-    "skuName": "哈哈1"
+    "categoryFullId": "",
+    "categoryFullName": "饮品类/奶制品/常温奶",
+    "goodsCode": "1",
+    "goodsId": 0,
+    "goodsName": "新希望纯牛奶",
+    "goodsUnit": "袋",
+    "id": 0,
+    "isNormal": 0,
+    "purchasePrice": 5.00,
+    "spec": "250ml",
+    "supplierId": 0
+  },
+  {
+    "categoryFullId": "",
+    "categoryFullName": "饮品类/奶制品/常温奶",
+    "goodsCode": "2",
+    "goodsId": 0,
+    "goodsName": "菊乐乳酸牛奶",
+    "goodsUnit": "盒",
+    "id": 1,
+    "isNormal": 0,
+    "purchasePrice": 15.00,
+    "spec": "450ml",
+    "supplierId": 0
+  },
+  {
+    "categoryFullId": "",
+    "categoryFullName": "饮品类/奶制品/常温奶",
+    "goodsCode": "3",
+    "goodsId": 0,
+    "goodsName": "蒙牛优酷乳",
+    "goodsUnit": "盒",
+    "id": 2,
+    "isNormal": 0,
+    "purchasePrice": 2.5,
+    "spec": "250ml",
+    "supplierId": 0
   }
 ]

@@ -1,0 +1,24 @@
+[
+  {
+    "goodsCode": "1",
+    "goodsName": "新希望纯牛奶",
+    "goodsUnit": "袋",
+    "purchaseDate": "2021-10-15T15:09:36",
+    "purchaseNumber": 10000,
+    "purchaseOrderId": 1,
+    "purchasePrice": 3.5,
+    "spec": "250ml",
+    "totalAmount": 35000
+  },
+  {
+    "goodsCode": "2",
+    "goodsName": "菊乐乳酸牛奶",
+    "goodsUnit": "盒",
+    "purchaseDate": "2021-10-15T15:09:36",
+    "purchaseNumber": 5000,
+    "purchaseOrderId": 1,
+    "purchasePrice": 10,
+    "spec": "450ml",
+    "totalAmount": 50000
+  }
+]
