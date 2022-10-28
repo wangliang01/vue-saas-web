@@ -1,4 +1,4 @@
-import { PROJECT_NAME } from '@/config/setting'
+const PROJECT_NAME = '1'
 /**
  *
  * @param {String} title

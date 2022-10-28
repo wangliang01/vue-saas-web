@@ -40,15 +40,9 @@ import storage from '@/utils//storage'
 const phoneReg = /^1\d{10}$/
 export default {
   name: 'Login',
-  components: {
-  },
-  props: {
-
-  },
   data() {
     return {
-      codeLoading: false,
-      forgetLoading: false,
+      loading: false,
       visible: false,
       actionTab: 'password',
       form: {
@@ -82,7 +76,7 @@ export default {
                 <el-input maxLength={6} style='width: 62%' v-model={this.forgetPasswordForm.verificationCode} placeholder='请输入验证码'>
                   <i slot='prefix' class='el-icon-lock'></i>
                 </el-input>
-                <el-button style='width: 32%; border-radius: 20px;' type='primary' disabled={this.isForgetDisabled} loading={this.forgetLoading} onClick={this.getForgetCode}>
+                <el-button style='width: 32%; border-radius: 20px;' type='primary' disabled={this.isForgetDisabled} loading={this.loading} onClick={this.getForgetCode}>
                   {this.codeText}
                 </el-button>
               </div>
@@ -210,7 +204,7 @@ export default {
                 <el-input maxLength={6} style='width: 60%' v-model={this.form.code} placeholder='请输入验证码'>
                   <i slot='prefix' class='el-icon-lock' ></i>
                 </el-input>
-                <el-button style='width: 30%; border-radius: 20px;' type='primary' disabled={this.isDisabled} loading={this.codeLoading} onClick={this.getCode}>
+                <el-button style='width: 30%; border-radius: 20px;' type='primary' disabled={this.isDisabled} loading={this.loading} onClick={this.getCode}>
                   {this.codeLoginText }
                 </el-button>
               </div>
@@ -259,14 +253,14 @@ export default {
     getCode() {
       this.$refs.form.validateField('phone', async valid => {
         if (valid === '') {
-          this.codeLoading = true
+          this.loading = true
           try {
             const res = await api.loginApi.sendCode({
               phone: this.form.phone
             })
             if (res.success) {
               this.isDisabled = !this.isDisabled
-              this.codeLoading = false
+              this.loading = false
               const countdown = setInterval(() => {
                 this.resetTime--
                 if (this.resetTime <= 0) {
@@ -277,7 +271,7 @@ export default {
               }, 1000)
             }
           } catch (e) {
-            this.codeLoading = false
+            this.loading = false
           }
         }
       })
@@ -285,14 +279,14 @@ export default {
     getForgetCode() {
       this.$refs.forgetForm.validateField('phone', async valid => {
         if (valid === '') {
-          this.forgetLoading = true
+          this.loading = true
           try {
             const res = await api.loginApi.sendCode({
               phone: this.forgetPasswordForm.phone
             })
             if (res.success) {
               this.isForgetDisabled = !this.isForgetDisabled
-              this.forgetLoading = false
+              this.loading = false
               const countdown = setInterval(() => {
                 this.forgetResetTime--
                 if (this.forgetResetTime <= 0) {
@@ -303,7 +297,7 @@ export default {
               }, 1000)
             }
           } catch (e) {
-            this.forgetLoading = false
+            this.loading = false
           }
         }
       })
@@ -335,18 +329,18 @@ export default {
       if (res.success) {
         // 获取用户基本信息
         storage.set('token', res.data)
-        const customerInfo = await api.loginApi.getUserStructure({
-          phone: this.form.username
-        })
-        const arr = customerInfo.data.filter(item => item.openScm === 1)
-        if (!arr.length) {
-          storage.remove('token')
-          return this.$message.warning('没有权限')
-        }
-        if (arr.length > 1) {
-          return this.$message.warning('你当前登录账号开通了多个客户供应链设置，请到新商流平台取消多余的客户供应链设置')
-        }
-        storage.set('customerInfo', arr[0])
+        // const customerInfo = await api.loginApi.getUserStructure({
+        //   phone: this.form.username
+        // })
+        // const arr = customerInfo.data.filter(item => item.openScm === 1)
+        // if (!arr.length) {
+        //   storage.remove('token')
+        //   return this.$message.warning('没有权限')
+        // }
+        // if (arr.length > 1) {
+        //   return this.$message.warning('你当前登录账号开通了多个客户供应链设置，请到新商流平台取消多余的客户供应链设置')
+        // }
+        // storage.set('customerInfo', arr[0])
         try {
           const info = await api.loginApi.getStaffInfo()
           if (info.success) {
