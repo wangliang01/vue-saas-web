@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Layout from '@/layout'
+import { BasicLayout } from '@/layout'
 // import setTitle from '@/utils/setTitle'
 // import storage from '@/utils/storage'
 
@@ -17,7 +17,8 @@ Vue.use(VueRouter)
 export const asyncRoutes = [
   {
     path: '/',
-    component: Layout,
+    name: 'Layout',
+    component: BasicLayout,
     children: [
       {
         path: 'home',
@@ -55,7 +56,7 @@ files.keys().forEach(key => {
   if (key === './index.js') return
   const children = routes.find(route => route.name === 'Layout')?.children
   console.log(children)
-  if (Array.isArray(children)) children.push.apply(children, files(key).default)
+  if (children && Array.isArray(children)) children.push.apply(children, files(key).default)
 })
 
 console.log('路由信息', routes)

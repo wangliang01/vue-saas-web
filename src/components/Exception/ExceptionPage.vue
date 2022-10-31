@@ -38,7 +38,7 @@ export default {
       if (this.homeRoute) {
         this.$router.push(this.homeRoute)
       }
-      this.$emit('backHome', this.type)
+      this.$emit('back', this.type)
     }
   }
 }
