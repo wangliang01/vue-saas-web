@@ -3,6 +3,9 @@ const webpack = require('webpack')
 const buildDate = JSON.stringify(new Date().toLocaleDateString())
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const chalk = require('chalk')
+const ThemeColorReplacer = require('webpack-theme-color-replacer')
+const forElementUI = require('webpack-theme-color-replacer/forElementUI')
+const config = require('./src/config')
 
 const isMock = process.env.VUE_APP_ENV === 'mock'
 console.log(`${chalk.green('当前运行环境:')} ${chalk.red(process.env.VUE_APP_ENV)}`)
@@ -25,7 +28,7 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: `@import "~@/styles/color.scss";`
+        prependData: `@import "~@/styles/element-variables.scss";`
       }
     }
   },
@@ -44,6 +47,18 @@ module.exports = {
       ]
     },
     plugins: [
+      // 生成仅包含颜色的替换样式（主题色等）
+      new ThemeColorReplacer({
+        fileName: 'style/theme-colors.[contenthash:8].css',
+        matchColors: [
+          ...forElementUI.getElementUISeries(config.theme.color) // element-ui主色系列
+        ],
+        // externalCssFiles: ['./node_modules/element-ui/lib/theme-chalk/index.css'],
+        changeSelector: forElementUI.changeSelector,
+        // 可选的。将 css 文本注入 js 文件，不再需要下载 `theme-colors-xxx.css`。
+        // injectCss: false,
+        isJsUgly: process.env.NODE_ENV !== 'development'
+      }),
       // 开启gzip压缩
       new CompressionWebpackPlugin(
         {

@@ -13,6 +13,7 @@ import { openFullScreen, closeFullScreen } from '@/utils/loading'
 import 'yyx-component/lib/yui.css'
 import './styles/base.scss'
 import './styles/element-theme.scss'
+import './styles/element-variables.scss'
 import './styles/element.scss'
 import '@/assets/fonts/iconfont.css'
 
@@ -20,6 +21,8 @@ import '@/assets/fonts/iconfont.css'
 import packageJson from '../package.json'
 import { consoleVersion } from '@/utils'
 consoleVersion(packageJson)
+import { initThemeColor } from '@/utils/themeColorClient'
+initThemeColor()
 
 Vue.use(ElementUI)
 Vue.use(yui)

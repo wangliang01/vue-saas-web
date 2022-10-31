@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import _ from 'lodash'
-import storage from '@/utils/storage'
+import store from '@/store'
 import router from '@/router'
 const isProd = process.env.NODE_ENV
-const CLIENT_ID = 1
+const CLIENT_ID = 'system-service'
 
 function getInstance(options) {
   return axios.create(options)
@@ -70,8 +70,8 @@ console.log('实例：', instance)
 instance.interceptors.request.use(config => {
   mergeOptions = mergeConfig(defaultConfig, config)
   // 处理token, 等全局参数
-  const token = storage.get('token')
-  const customerInfo = storage.get('customerInfo')
+  const token = store.state.account.token
+  const customerInfo = store.state.account.user
   config.headers.Authorization = 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_ID)
   if (token) {
     config.headers.Authorization = 'bearer ' + token
@@ -101,10 +101,12 @@ instance.interceptors.response.use(response => {
       Message.error(msg)
     }
     if (router.currentRoute.path === '/login') {
-      storage.removeAll()
+      // storage.removeAll()
+      store.mutations.account.removeToken()
     } else {
       if (['00402', '00420', '00437', '00439'].includes(code)) {
-        storage.removeAll()
+        // storage.removeAll()
+        store.mutations.account.removeToken()
         router.push('/login')
       }
     }

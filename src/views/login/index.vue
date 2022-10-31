@@ -4,40 +4,78 @@
       <div class="login-content">
         <div class="login-form">
           <div class="wrapper">
-            <h1 class="title">供应链管理后台</h1>
+            <h1 class="title">{{ systemName }}</h1>
             <div class="tabs">
-              <div class="tabs-item" :class="{active: actionTab==='password'}" @click="toggleTab('password')">账户密码登录</div>
-              <div class="tabs-item" :class="{active: actionTab==='phone'}" @click="toggleTab('phone')">手机号登录</div>
+              <div
+                class="tabs-item"
+                :class="{ active: actionTab === 'password' }"
+                @click="toggleTab('password')"
+              >
+                账户密码登录
+              </div>
+              <div
+                class="tabs-item"
+                :class="{ active: actionTab === 'phone' }"
+                @click="toggleTab('phone')"
+              >
+                手机号登录
+              </div>
             </div>
             <y-form ref="form" v-model="form" :config="config">
               <!-- 辅助信息 -->
               <div class="sub-info">
-                <el-checkbox v-model="form.remenberPassword" @change="handleChangeRemenberPassword">记住密码</el-checkbox>
+                <el-checkbox
+                  v-model="form.remenberPassword"
+                  @change="handleChangeRemenberPassword"
+                >记住密码</el-checkbox>
                 <el-link type="primary" @click="handleForget">忘记密码</el-link>
               </div>
-              <el-button class="y-block login-btn" type="primary" @click.enter="handleLogin">登录</el-button>
+              <el-button
+                class="y-block login-btn"
+                type="primary"
+                @click.enter="handleLogin"
+              >登录</el-button>
             </y-form>
           </div>
         </div>
       </div>
     </div>
-    <y-drawer title="忘记密码" :visible.sync="visible" :before-close="handleClose" @cancel="handleCancel" @confirm="handleConfirm">
-      <y-form v-if="visible" ref="forgetForm" v-model="forgetPasswordForm" :config="forgetPasswordConfig" label-width="100px"></y-form>
+    <y-drawer
+      title="忘记密码"
+      :visible.sync="visible"
+      :before-close="handleClose"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
+    >
+      <y-form
+        v-if="visible"
+        ref="forgetForm"
+        v-model="forgetPasswordForm"
+        :config="forgetPasswordConfig"
+        label-width="100px"
+      ></y-form>
       <div style="text-align: right">
         <y-button @click="resetForgetForm">重置</y-button>
       </div>
     </y-drawer>
     <!-- 版权信息 -->
     <div class="copy-right">
-      <el-link target="_blank" href="http://beian.miit.gov.cn">版本所有：新希望云优选成都供应链管理有限公司<span class="ml-20">备案号：蜀ICP备20017590号-1</span></el-link>
+      <el-link
+        target="_blank"
+        href="http://beian.miit.gov.cn"
+      >版本所有：{{ copyright
+      }}<span class="ml-20">备案号：{{ recordNumber }}</span></el-link>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import api from '@/api'
+import { changeThemeColor } from '@/utils/themeColorClient'
 import storage from '@/utils//storage'
 const phoneReg = /^1\d{10}$/
+
 export default {
   name: 'Login',
   data() {
@@ -47,8 +85,8 @@ export default {
       actionTab: 'password',
       form: {
         remenberPassword: false,
-        username: '',
-        password: '',
+        username: '18566725203',
+        password: '123456',
         phone: '',
         code: '',
         grant_type: 'password'
@@ -65,24 +103,41 @@ export default {
           prop: 'phone',
           fieldType: 'Input',
           placeholder: '请输入手机号',
-          rules: [{ required: true, message: '手机号不能为空', trigger: ['blur'] }]
+          rules: [
+            { required: true, message: '手机号不能为空', trigger: ['blur'] }
+          ]
         },
         verificationCode: {
           label: '验证码',
           prop: 'verificationCode',
           fieldType: {
             render: (h) => {
-              return <div style='display: flex; justify-content: space-between'>
-                <el-input maxLength={6} style='width: 62%' v-model={this.forgetPasswordForm.verificationCode} placeholder='请输入验证码'>
-                  <i slot='prefix' class='el-icon-lock'></i>
-                </el-input>
-                <el-button style='width: 32%; border-radius: 20px;' type='primary' disabled={this.isForgetDisabled} loading={this.loading} onClick={this.getForgetCode}>
-                  {this.codeText}
-                </el-button>
-              </div>
+              return (
+                <div style='display: flex; justify-content: space-between'>
+                  <el-input
+                    maxLength={6}
+                    style='width: 62%'
+                    v-model={this.forgetPasswordForm.verificationCode}
+                    placeholder='请输入验证码'
+                  >
+                    <i slot='prefix' class='el-icon-lock'></i>
+                  </el-input>
+                  <el-button
+                    style='width: 32%; border-radius: 20px;'
+                    type='primary'
+                    disabled={this.isForgetDisabled}
+                    loading={this.loading}
+                    onClick={this.getForgetCode}
+                  >
+                    {this.codeText}
+                  </el-button>
+                </div>
+              )
             }
           },
-          rules: [{ required: true, message: '验证码不能为空', trigger: ['blur'] }]
+          rules: [
+            { required: true, message: '验证码不能为空', trigger: ['blur'] }
+          ]
         },
         pwd: {
           label: '新密码',
@@ -93,8 +148,16 @@ export default {
           readonly: true,
           rules: [
             { required: true, message: '新密码不能为空', trigger: ['blur'] },
-            { min: 8, max: 16, message: '不能小于8个字符或者超过16个字符', trigger: 'blur' },
-            { pattern: /^[0-9a-zA-Z]{1,}$/, message: '密码不合法，支持大小写字母与数字组合' }
+            {
+              min: 8,
+              max: 16,
+              message: '不能小于8个字符或者超过16个字符',
+              trigger: 'blur'
+            },
+            {
+              pattern: /^[0-9a-zA-Z]{1,}$/,
+              message: '密码不合法，支持大小写字母与数字组合'
+            }
           ]
         },
         confirmPwd: {
@@ -106,8 +169,16 @@ export default {
           readonly: true,
           rules: [
             { required: true, message: '新密码不能为空', trigger: ['blur'] },
-            { min: 8, max: 16, message: '不能小于8个字符或者超过16个字符', trigger: 'blur' },
-            { pattern: /^[0-9a-zA-Z]{1,}$/, message: '密码不合法，支持大小写字母与数字组合' }
+            {
+              min: 8,
+              max: 16,
+              message: '不能小于8个字符或者超过16个字符',
+              trigger: 'blur'
+            },
+            {
+              pattern: /^[0-9a-zA-Z]{1,}$/,
+              message: '密码不合法，支持大小写字母与数字组合'
+            }
           ]
         }
       },
@@ -118,6 +189,10 @@ export default {
     }
   },
   computed: {
+    // systemName() {
+    //   return this.$store.state.setting.systemName
+    // },
+    ...mapState('setting', ['systemName', 'copyright', 'recordNumber']),
     // 验证码方案
     codeText() {
       return this.isForgetDisabled === false
@@ -158,12 +233,24 @@ export default {
           label: '',
           fieldType: {
             render: () => {
-              return <el-input maxLength={11} v-model={this.form.username} placeholder='账号'>
-                <i slot='prefix' class='el-icon-user'></i>
-              </el-input>
+              return (
+                <el-input
+                  maxLength={11}
+                  v-model={this.form.username}
+                  placeholder='账号'
+                >
+                  <i slot='prefix' class='el-icon-user'></i>
+                </el-input>
+              )
             }
           },
-          rules: [{ required: true, trigger: ['blur', 'change'], validator: userValidator }]
+          rules: [
+            {
+              required: true,
+              trigger: ['blur', 'change'],
+              validator: userValidator
+            }
+          ]
         }
       }
       const password = {
@@ -172,12 +259,24 @@ export default {
           label: '',
           fieldType: {
             render: () => {
-              return <el-input type='password' v-model={this.form.password} placeholder='密码'>
-                <i slot='prefix' class='el-icon-lock' ></i>
-              </el-input>
+              return (
+                <el-input
+                  type='password'
+                  v-model={this.form.password}
+                  placeholder='密码'
+                >
+                  <i slot='prefix' class='el-icon-lock'></i>
+                </el-input>
+              )
             }
           },
-          rules: [{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }]
+          rules: [
+            {
+              required: true,
+              message: '请输入密码',
+              trigger: ['blur', 'change']
+            }
+          ]
         }
       }
       const phone = {
@@ -186,12 +285,24 @@ export default {
           label: '',
           fieldType: {
             render: () => {
-              return <el-input maxLength={11} v-model={this.form.phone} placeholder='手机号码'>
-                <i slot='prefix' class='el-icon-phone'></i>
-              </el-input>
+              return (
+                <el-input
+                  maxLength={11}
+                  v-model={this.form.phone}
+                  placeholder='手机号码'
+                >
+                  <i slot='prefix' class='el-icon-phone'></i>
+                </el-input>
+              )
             }
           },
-          rules: [{ required: true, trigger: ['blur', 'change'], validator: phoneValidator }]
+          rules: [
+            {
+              required: true,
+              trigger: ['blur', 'change'],
+              validator: phoneValidator
+            }
+          ]
         }
       }
       const code = {
@@ -200,17 +311,36 @@ export default {
           label: '',
           fieldType: {
             render: () => {
-              return <div style='display: flex; justify-content: space-between'>
-                <el-input maxLength={6} style='width: 60%' v-model={this.form.code} placeholder='请输入验证码'>
-                  <i slot='prefix' class='el-icon-lock' ></i>
-                </el-input>
-                <el-button style='width: 30%; border-radius: 20px;' type='primary' disabled={this.isDisabled} loading={this.loading} onClick={this.getCode}>
-                  {this.codeLoginText }
-                </el-button>
-              </div>
+              return (
+                <div style='display: flex; justify-content: space-between'>
+                  <el-input
+                    maxLength={6}
+                    style='width: 60%'
+                    v-model={this.form.code}
+                    placeholder='请输入验证码'
+                  >
+                    <i slot='prefix' class='el-icon-lock'></i>
+                  </el-input>
+                  <el-button
+                    style='width: 30%; border-radius: 20px;'
+                    type='primary'
+                    disabled={this.isDisabled}
+                    loading={this.loading}
+                    onClick={this.getCode}
+                  >
+                    {this.codeLoginText}
+                  </el-button>
+                </div>
+              )
             }
           },
-          rules: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change'] }]
+          rules: [
+            {
+              required: true,
+              message: '请输入验证码',
+              trigger: ['blur', 'change']
+            }
+          ]
         }
       }
       if (this.form.grant_type === 'password') {
@@ -235,12 +365,18 @@ export default {
     // 获取存入的用户数据
     const loginUserMap = storage.get('loginUserMap')
     if (loginUserMap?.remenberPassword) {
-      Object.keys(this.form).forEach(key => {
+      Object.keys(this.form).forEach((key) => {
         this.form[key] = loginUserMap[key]
       })
     }
+
+    setTimeout(() => {
+      changeThemeColor('#ff0000')
+    }, 2000)
   },
   methods: {
+    ...mapMutations('account', ['setToken', 'removeToken']),
+    ...mapActions('account', ['getUser']),
     /* 切换选项卡 */
     toggleTab(type) {
       this.actionTab = type
@@ -251,7 +387,7 @@ export default {
     },
     /* 获取验证码 */
     getCode() {
-      this.$refs.form.validateField('phone', async valid => {
+      this.$refs.form.validateField('phone', async(valid) => {
         if (valid === '') {
           this.loading = true
           try {
@@ -277,7 +413,7 @@ export default {
       })
     },
     getForgetCode() {
-      this.$refs.forgetForm.validateField('phone', async valid => {
+      this.$refs.forgetForm.validateField('phone', async(valid) => {
         if (valid === '') {
           this.loading = true
           try {
@@ -304,7 +440,7 @@ export default {
     },
     /* 登录 */
     handleLogin() {
-      this.$refs.form.validate(async valid => {
+      this.$refs.form.validate(async(valid) => {
         if (valid) {
           if (this.form.grant_type === 'password') {
             // 密码登录
@@ -317,73 +453,54 @@ export default {
       })
     },
     async handleLoginByPassword() {
-      const res = await api.loginApi.login({
+      const params = {
         password: this.form.password,
         username: this.form.username,
         grant_type: this.form.grant_type,
         account: ''
-      }).catch(() => {
-        storage.remove('token')
-      })
+      }
+      api.loginApi
+        .login(params)
+        .then(this.afterLogin)
+        .catch(() => {
+          this.removeToken()
+        })
+    },
+    async afterLogin(res) {
+      console.log(res)
       if (!res) return
       if (res.success) {
+        /* 保存token */
+        this.setToken(res.data)
         // 获取用户基本信息
-        storage.set('token', res.data)
-        // const customerInfo = await api.loginApi.getUserStructure({
-        //   phone: this.form.username
-        // })
-        // const arr = customerInfo.data.filter(item => item.openScm === 1)
-        // if (!arr.length) {
-        //   storage.remove('token')
-        //   return this.$message.warning('没有权限')
-        // }
-        // if (arr.length > 1) {
-        //   return this.$message.warning('你当前登录账号开通了多个客户供应链设置，请到新商流平台取消多余的客户供应链设置')
-        // }
-        // storage.set('customerInfo', arr[0])
-        try {
-          const info = await api.loginApi.getStaffInfo()
-          if (info.success) {
-            storage.set('customerInfo', {
-              tenantId: info.data.accountId,
-              orgId: info.data.accountId
-            })
-            storage.set('userInfo', info.data)
-            // 将用户登录信息存入storage
-            if (this.form.remenberPassword) {
-              storage.set('loginUserMap', {
-                ...this.form
-              })
-            }
-            // 跳转到首页
-            this.$router.push('/')
-          }
-        } catch {
-          storage.remove('token')
-        }
+        this.getUser()
       }
     },
     async handleLoginByPhone() {
-      const res = await api.loginApi.login({
-        phone: this.form.phone,
-        code: this.form.code,
-        grant_type: this.form.grant_type
-      }).catch(() => {
-        storage.remove('token')
-      })
+      const res = await api.loginApi
+        .login({
+          phone: this.form.phone,
+          code: this.form.code,
+          grant_type: this.form.grant_type
+        })
+        .catch(() => {
+          storage.remove('token')
+        })
       if (!res) return
       if (res.success) {
         storage.set('token', res.data)
         const customerInfo = await api.loginApi.getUserStructure({
           phone: this.form.phone
         })
-        const arr = customerInfo.data.filter(item => item.openScm === 1)
+        const arr = customerInfo.data.filter((item) => item.openScm === 1)
         if (!arr.length) {
           storage.remove('token')
           return this.$message.warning('没有权限')
         }
         if (arr.length > 1) {
-          return this.$message.warning('你当前登录账号开通了多个客户供应链设置，请到新商流平台取消多余的客户供应链设置')
+          return this.$message.warning(
+            '你当前登录账号开通了多个客户供应链设置，请到新商流平台取消多余的客户供应链设置'
+          )
         }
         storage.set('customerInfo', arr[0])
         try {
@@ -433,7 +550,8 @@ export default {
         input?.[3]?.addEventListener('focus', removeAttribute)
       })
     },
-    handleChangeRemenberPassword(remenberPassword) { // 记住密码
+    handleChangeRemenberPassword(remenberPassword) {
+      // 记住密码
       const loginUserMap = storage.get('loginUserMap') || {}
       loginUserMap.remenberPassword = remenberPassword
       storage.set('loginUserMap', loginUserMap)
@@ -443,13 +561,13 @@ export default {
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
-        .then(_ => {
+        .then((_) => {
           done()
         })
-        .catch(_ => {})
+        .catch((_) => {})
     },
     handleConfirm() {
-      this.$refs.forgetForm.validate(valid => {
+      this.$refs.forgetForm.validate((valid) => {
         if (valid) {
           this.$confirm(`确认修改密码？`)
             .then(async() => {
@@ -480,22 +598,23 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-
 .login {
   height: 100vh;
   display: flex;
   justify-content: center;
 }
-.login-bg{
+.login-bg {
   flex: 1;
-  background:url('../../assets/images/bg2.png') no-repeat 12% center/auto 70%, url('../../assets/images/bg1.png') center top/100% 100% no-repeat, url('../../assets/images/bg.png') center top/100% 100% no-repeat;
+  background: url("../../assets/images/bg2.png") no-repeat 12% center/auto 70%,
+    url("../../assets/images/bg1.png") center top/100% 100% no-repeat,
+    url("../../assets/images/bg.png") center top/100% 100% no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
 
-.login-content{
+.login-content {
   width: 70%;
   min-width: 1200px;
   min-height: 500px;
@@ -506,18 +625,18 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-image: url('../../assets/images/white.png');
+  background-image: url("../../assets/images/white.png");
   background-size: 42% 100%;
   background-repeat: no-repeat;
   background-position: 100% 0;
-  .login-form{
+  .login-form {
     width: 42%;
     display: flex;
     align-items: center;
     justify-content: center;
-    .wrapper{
+    .wrapper {
       width: 368px;
-      .tabs{
+      .tabs {
         display: flex;
         justify-content: space-around;
         .tabs-item {
@@ -539,22 +658,22 @@ export default {
         text-align: center;
         margin-bottom: 50px;
       }
-      ::v-deep .el-form-item{
+      ::v-deep .el-form-item {
         margin-bottom: 24px;
       }
-      ::v-deep .el-input__prefix{
+      ::v-deep .el-input__prefix {
         line-height: 40px;
         left: 15px;
       }
-      ::v-deep .el-input__inner{
+      ::v-deep .el-input__inner {
         height: 40px;
         line-height: 40px;
         padding-left: 34px;
         border-radius: 20px;
-        background-color: #EFF0F4;
-        border-color: transparent
+        background-color: #eff0f4;
+        border-color: transparent;
       }
-      .sub-info{
+      .sub-info {
         margin-bottom: 24px;
         display: flex;
         justify-content: space-between;
@@ -566,7 +685,7 @@ export default {
         border-radius: 20px;
         margin-bottom: 25px;
       }
-      .apply-link{
+      .apply-link {
         float: right;
       }
     }
@@ -579,7 +698,7 @@ export default {
   }
 }
 
-.copy-right{
+.copy-right {
   position: absolute;
   bottom: 0;
   height: 60px;

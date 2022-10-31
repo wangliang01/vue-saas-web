@@ -1,6 +1,6 @@
 import Storages from 'js-storage'
-
-const ns = Storages.initNamespaceStorage('yyx-group-meal-web')
+const namespace = process.env.VUE_APP_NAME
+const ns = Storages.initNamespaceStorage(namespace)
 
 const storage = ns.localStorage
 

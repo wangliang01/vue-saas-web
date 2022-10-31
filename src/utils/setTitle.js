@@ -1,4 +1,5 @@
-const PROJECT_NAME = '1'
+import store from '@/store'
+const PROJECT_NAME = store.state.setting.systemName
 /**
  *
  * @param {String} title

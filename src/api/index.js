@@ -16,6 +16,9 @@ apiPaths.forEach(path => {
     })
   }
   api[`${key}Api`] = value
+ 
 })
+
+
 
 export default api
