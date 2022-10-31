@@ -1,8 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import setTitle from '@/utils/setTitle'
 import Layout from '@/layout'
-import storage from '@/utils/storage'
+// import setTitle from '@/utils/setTitle'
+// import storage from '@/utils/storage'
+
+// 解决Vue-Router升级导致的Uncaught(in promise) navigation guard问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) { return originalPush.call(this, location, onResolve, onReject) }
+  return originalPush.call(this, location).catch((err) => err)
+}
 
 Vue.use(VueRouter)
 
@@ -10,12 +17,10 @@ Vue.use(VueRouter)
 export const asyncRoutes = [
   {
     path: '/',
-    name: 'Layout',
     component: Layout,
     children: [
       {
-        path: '',
-        redirect: '/purchase/list',
+        path: 'home',
         name: 'Home',
         component: () => import('@/views/home')
       }
@@ -29,6 +34,16 @@ export const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login')
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/exception/403')
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () => import('@/views/exception/404')
   },
   ...asyncRoutes
 ]
@@ -51,18 +66,18 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  setTitle(to)
-  if (to.path === '/login') {
-    next() // 放行
-  } else {
-    const token = storage.get('token')
-    if (token) {
-      next()
-      return
-    }
-    next('/login')
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   setTitle(to)
+//   if (to.path === '/login') {
+//     next() // 放行
+//   } else {
+//     const token = storage.get('token')
+//     if (token) {
+//       next()
+//       return
+//     }
+//     next('/login')
+//   }
+// })
 
 export default router

@@ -1,4 +1,4 @@
-import api from '@/api'
+// import api from '@/api'
 export default {
   namespaced: true,
   state: {
@@ -21,8 +21,8 @@ export default {
   },
   actions: {
     async getUser() {
-      const res = await api.loginApi.getStaffInfo()
-      console.log('res', res)
+      // const res = await api.loginApi.getStaffInfo()
+      // console.log('res', res)
     }
   }
 }

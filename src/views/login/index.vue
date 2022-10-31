@@ -471,9 +471,15 @@ export default {
       if (!res) return
       if (res.success) {
         /* 保存token */
-        this.setToken(res.data)
+        // this.setToken(res.data)
         // 获取用户基本信息
         this.getUser()
+        // 跳转页面
+        this.$router.push({
+          name: 'Home'
+        }).catch(err => {
+          console.error(err)
+        })
       }
     },
     async handleLoginByPhone() {
