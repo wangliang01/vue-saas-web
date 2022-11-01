@@ -48,18 +48,18 @@ export default {
   watch: {
     '$route': {
       handler(val, old) {
-        const routes = config.menu
-        const curTag = getTag(routes, val)
-        if (!curTag) return
-        const curRoute = this.$route
-        curTag.name = curRoute.name
-        curTag.query = curRoute.query
-        if (curTag?.children && curTag.children.length) return
-        // 添加到store中
-        this.$store.commit('ADD_TAG', { tag: curTag, old })
-        this.$nextTick(() => {
-          this._init()
-        })
+        // const routes = config.menu
+        // const curTag = getTag(routes, val)
+        // if (!curTag) return
+        // const curRoute = this.$route
+        // curTag.name = curRoute.name
+        // curTag.query = curRoute.query
+        // if (curTag?.children && curTag.children.length) return
+        // // 添加到store中
+        // this.$store.commit('ADD_TAG', { tag: curTag, old })
+        // this.$nextTick(() => {
+        //   this._init()
+        // })
       },
       deep: true,
       immediate: true

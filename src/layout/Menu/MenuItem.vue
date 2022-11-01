@@ -3,8 +3,8 @@
     <!-- 含有children -->
     <el-submenu v-if="menuItem.children && menuItem.children.length" :index="menuItem.path">
       <template slot="title">
-        <i v-if="menuItem.meta.icon" :class="['iconfont', menuItem.meta.icon]"></i>
-        <span class="menu-item-title">{{ menuItem.meta.title }}</span>
+        <i v-if="menuItem.meta && menuItem.meta.icon" :class="['iconfont', menuItem.meta.icon]"></i>
+        <span class="menu-item-title">{{ menuItem.meta && menuItem.meta.title }}</span>
       </template>
       <template v-for="child in menuItem.children">
         <MenuItem :key="child.path" :menu-item="child" class="menu-item__children"></MenuItem>
@@ -13,9 +13,9 @@
     <!-- 没有children -->
     <el-menu-item v-else :index="menuItem.path">
       <template slot="title">
-        <i v-if="menuItem.meta.icon" :class="['iconfont', menuItem.meta.icon]"></i>
+        <i v-if="menuItem.meta && menuItem.meta.icon" :class="['iconfont', menuItem.meta.icon]"></i>
         <i v-else class="dot"></i>
-        <span class="menu-item__children-title">{{ menuItem.meta.title }}</span>
+        <span class="menu-item__children-title">{{ menuItem.meta && menuItem.meta.title }}</span>
       </template>
     </el-menu-item>
   </div>

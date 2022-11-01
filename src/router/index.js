@@ -20,11 +20,6 @@ export const asyncRoutes = [
     name: 'Layout',
     component: BasicLayout,
     children: [
-      {
-        path: 'home',
-        name: 'Home',
-        component: () => import('@/views/home')
-      }
     ]
   }
 ]
@@ -55,7 +50,6 @@ files.keys().forEach(key => {
   console.log(key)
   if (key === './index.js') return
   const children = routes.find(route => route.name === 'Layout')?.children
-  console.log(children)
   if (children && Array.isArray(children)) children.push.apply(children, files(key).default)
 })
 

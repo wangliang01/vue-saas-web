@@ -518,7 +518,7 @@ export default {
               orgId: info.data.accountId
             })
             storage.set('userInfo', info.data)
-            this.$router.push('/')
+            this.$router.push('/dashboard')
           }
         } catch {
           storage.remove('token')

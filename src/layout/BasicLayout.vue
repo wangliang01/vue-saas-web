@@ -1,37 +1,37 @@
 <template>
   <div class="basic-layout">
-    <el-row>
-      <el-col :xl="24" :lg="24" class="layout-container">
-        <!-- 左侧二级菜单 -->
-        <div class="layout-bottom">
-          <Menu :menu="menu" :active-main-menu="computedActiveMainMenu" :is-horizontal="isHorizontal"></Menu>
-          <div class="main">
-            <Tags @refresh="handleRefresh"></Tags>
-            <transition name="fade-transverse" mode="out-in">
-              <keep-alive v-if="refresh" :include="keepAliveInclude">
-                <router-view :key="key" class="router-view"></router-view>
-              </keep-alive>
-            </transition>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+    <div class="basic-layout-container">
+      <!-- Header -->
+      <AdminHeader></AdminHeader>
+      <div class="basic-layout-content">
+        <!-- 侧边栏 -->
+        <Sidebar></Sidebar>
+        <!-- 主内容区 -->
+        <AppMain></AppMain>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import Menu from '@/components/Menu'
+import Menu from './Menu'
 import Tags from './Tags/index.vue'
 import menuConfig from '@/config'
 import menuStyle from '@/styles/menu.scss'
 import HeaderAvatar from './Header/HeaderAvatar.vue'
+import AdminHeader from './Header/AdminHeader.vue'
+import Sidebar from './Sidebar'
+import AppMain from './AppMain'
 export default {
   name: 'BasicLayout',
   components: {
+    AdminHeader,
     Menu,
     HeaderAvatar,
-    Tags
+    Tags,
+    Sidebar,
+    AppMain
   },
   data() {
     const { menu } = menuConfig
@@ -44,9 +44,7 @@ export default {
     }
   },
   computed:{
-    systemName() {
-      return this.$store.state.setting.systemName
-    },
+   
     computedActiveMainMenu() {
       const active = this.$route.fullPath.split('/')[1] || this.activeMainMenu
       return active.includes('/') ? active : `/${active}`
@@ -96,49 +94,12 @@ export default {
 $--background-color-grey: #EFF3F6;
 .basic-layout {
   height: 100vh;
-  ::v-deep .el-row {
-    height: 100%;
-  }
 }
-.layout-container {
+.basic-layout-container {
   display: flex;
   flex-flow: column wrap;
   height: 100%;
-  .layout-top {
-    display: flex;
-    height: 60px;
-    align-items: center;
-    box-shadow: 2px 0px 6px 0px rgba(0, 21, 41, 0.12);
-    .nav-menu-title {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 208px;
-      background-color: #363636;
-      color: #fff;
-      font-size: 19px;
-      font-family: PingFang-SC-Heavy, PingFang-SC;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 21px;
-    }
-    .menu {
-      flex: 3;
-    }
-    .layout-top-right{
-      padding: 10px 24px;
-      flex: 1;
-      text-align: right;
-    }
-  }
-   ::v-deep.nav-menu-horizontal{
-      width: 100%;
-      border-bottom: none;
-      box-sizing: border-box;
-      min-width: 700px;
-    }
-    .layout-bottom{
+    .basic-layout-content{
       flex: 1;
       display: flex;
       flex-flow: row nowrap;

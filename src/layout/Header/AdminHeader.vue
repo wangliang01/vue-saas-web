@@ -1,6 +1,6 @@
 <template>
   <!-- 顶部一级菜单 -->
-  <div class="layout-top">
+  <div class="basic-layout-header">
     <div class="nav-menu-title">
       <h1>{{ systemName }}</h1>
     </div>
@@ -33,16 +33,29 @@
 </template>
 
 <script>
+import menuStyle from '@/styles/menu.scss'
+import HeaderAvatar from '../Header/HeaderAvatar.vue'
 export default {
   name: 'AdminHeader',
   components: {
+    HeaderAvatar
   },
   props: {
 
   },
   data() {
     return {
-
+      menuStyle,
+      isHorizontal: false
+    }
+  },
+  computed: {
+    systemName() {
+      return this.$store.state.setting.systemName
+    },
+    computedActiveMainMenu() {
+      const active = this.$route.fullPath.split('/')[1] || this.activeMainMenu
+      return active.includes('/') ? active : `/${active}`
     }
   },
   mounted() {
@@ -55,5 +68,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+ .basic-layout-header {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    box-shadow: 2px 0px 6px 0px rgba(0, 21, 41, 0.12);
+    .nav-menu-title {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 208px;
+      background-color: #363636;
+      color: #fff;
+      font-size: 19px;
+      font-family: PingFang-SC-Heavy, PingFang-SC;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 21px;
+    }
+    .menu {
+      flex: 3;
+    }
+    .layout-top-right{
+      padding: 10px 24px;
+      flex: 1;
+      text-align: right;
+    }
+  }
 </style>

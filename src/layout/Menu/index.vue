@@ -10,8 +10,8 @@
     @open="handleOpen"
     @close="handleClose"
   >
-    <template v-for="(menuItem) in leftMenu">
-      <MenuItem v-if="!menuItem.hidden" :key="menuItem.path" :menu-item="menuItem"></MenuItem>
+    <template v-for="(menuItem) in menu">
+      <MenuItem v-if="isVisible(menuItem)" :key="menuItem.path" :menu-item="menuItem"></MenuItem>
     </template>
   </el-menu>
 </template>
@@ -87,12 +87,19 @@ export default {
       return this.$route.fullPath
     }
   },
+  mounted() {
+    const map = toRoutesMap(this.menu)
+    console.log('map', map)
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath)
+    },
+    isVisible(item) {
+      return (item.meta && !item.meta.hidden) || !item.hidden
     }
   }
 }
