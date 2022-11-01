@@ -2,7 +2,9 @@
   <!-- 顶部一级菜单 -->
   <div class="basic-layout-header">
     <div class="nav-menu-title">
-      <h1>{{ systemName }}</h1>
+      <img src="../../assets/logo.png" alt="logo" width="30" class="y-m-r-4">
+      <h1>
+        {{ systemName }}</h1>
     </div>
     <div v-if="isHorizontal" class="menu">
       <el-row>
@@ -68,6 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import '../../styles/menu.scss';
  .basic-layout-header {
     display: flex;
     height: 60px;
@@ -78,8 +81,8 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 208px;
-      background-color: #363636;
+      width: $sideBarWidth;
+      background-color: $subMenuBg;
       color: #fff;
       font-size: 19px;
       font-family: PingFang-SC-Heavy, PingFang-SC;

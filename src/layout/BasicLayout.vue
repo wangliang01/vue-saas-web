@@ -106,7 +106,7 @@ $--background-color-grey: #EFF3F6;
       overflow: hidden;
       background-color: $--background-color-grey;
       ::v-deep .nav-menu-vertical{
-        width: 208px;
+        width: 256px;
         overflow-y: auto;
         overflow-x: hidden;
       }
