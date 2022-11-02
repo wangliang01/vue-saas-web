@@ -32,6 +32,19 @@ $sideBarWidth: 256px;
   min-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  ::v-deep .el-menu-item {
+    // & > .menu-item__children-title{
+    //   margin-left: 4px;
+    // }
+    background-color: $subMenuBg !important;
+    color: hsla(0,0%,100%,.65);;
+    &:hover {
+      color: $subMenuActiveText !important;
+    }
+  }
+  .el-menu {
+    background: $menuBg !important;
+  }
   ::v-deep .el-submenu {
     display: table;
     width: 100%;
@@ -40,6 +53,10 @@ $sideBarWidth: 256px;
     & > .el-submenu__title {
       display: flex;
       align-items: center;
+      color: hsla(0,0%,100%,.65);
+      &:hover {
+        background: transparent !important;
+      }
     }
 
     &:hover > .el-submenu__title {
@@ -73,6 +90,7 @@ $sideBarWidth: 256px;
       }
     }
 
+
     /* 选中时子菜单的样式 */
     &.is-active {
       .el-menu-item.is-active {
@@ -84,11 +102,6 @@ $sideBarWidth: 256px;
     .menu-item-title {
       font-size: 14px !important;
     }
-
-  
-   
-
-
   }
 }
 

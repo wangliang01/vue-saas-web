@@ -7,6 +7,7 @@
 <script>
 import Menu from '../Menu'
 import { asyncRoutes } from '@/router'
+const rootPath = '/'
 export default {
   name: 'Sidebar',
   components: {
@@ -20,18 +21,27 @@ export default {
       menu: []
     }
   },
-  watch: {
-    '$route': {
-      handler() {
-        this.menu = asyncRoutes.find(route => route.path === '/').children || []
-        console.log('menu', this.menu)
-      },
-      deep: true,
-      immediate: true
-    }
+  created() {
+    const menu = asyncRoutes.find(route => route.path === rootPath).children || []
+
+    menu.forEach(item => {
+      if (!item.path.startsWith('/')) {
+        item.path = `/${item.path}`
+      }
+      this.genRoutePath(item)
+    })
+
+    this.menu = menu
   },
   methods: {
-
+    genRoutePath(item) {
+      if (item.children) {
+        item.children.forEach(child => {
+          child.path = `${item.path}/${child.path}`
+          this.genRoutePath(child)
+        })
+      }
+    }
   }
 }
 </script>

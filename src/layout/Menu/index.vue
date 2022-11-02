@@ -3,12 +3,10 @@
   <el-menu
     :default-active="defaultActive"
     class="nav-menu-vertical"
-    :background-color="menuStyle.menuBg"
-    :text-color="menuStyle.menuText"
-    :active-text-color="menuStyle.menuActiveText"
     :router="true"
     @open="handleOpen"
     @close="handleClose"
+    @select="handleSelect"
   >
     <template v-for="(menuItem) in menu">
       <MenuItem v-if="isVisible(menuItem)" :key="menuItem.path" :menu-item="menuItem"></MenuItem>
@@ -66,6 +64,9 @@ export default {
     }
   },
   computed: {
+    defaultActive() {
+      return this.$route.fullPath
+    },
     menuTheme() {
       return this.theme === 'light' ? this.theme : 'dark'
     },
@@ -82,9 +83,6 @@ export default {
       }
 
       return this.menu
-    },
-    defaultActive() {
-      return this.$route.fullPath
     }
   },
   mounted() {
@@ -97,6 +95,12 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath)
+    },
+    handleSelect(key, keyPath) {
+      this.defaultActive = keyPath.reduce((prevPath, curPath) => {
+        prevPath += '/' + curPath
+        return prevPath
+      }, '')
     },
     isVisible(item) {
       return (item.meta && !item.meta.hidden) || !item.hidden
